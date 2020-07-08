@@ -1,6 +1,7 @@
 ARG baseimg=raspbian/stretch
 FROM $baseimg as build
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PCRE_VERSION 8.42
 ENV SRC_DIR=/src
 RUN mkdir -p $SRC_DIR
 RUN apt-get update
@@ -20,9 +21,8 @@ RUN tar xf nginx-1.15.6.tar.gz
 
 RUN wget -q https://github.com/arut/nginx-rtmp-module/archive/v1.2.1.tar.gz
 RUN tar xf v1.2.1.tar.gz
-
-RUN wget -q ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.42.tar.gz
-RUN tar -zxf pcre-8.42.tar.gz
+RUN wget -O pcre-${PCRE_VERSION}.tar.gz https://ftp.pcre.org/pub/pcre/pcre-${PCRE_VERSION}.tar.gz 
+RUN tar -zxf pcre-${PCRE_VERSION}.tar.gz
 
 WORKDIR /src/nginx-1.15.6
 RUN mkdir -p /build /conf
